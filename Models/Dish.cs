@@ -25,8 +25,7 @@ namespace chefdishes.Models
 
         public DateTime updated_at { get; set; }
         public int Chefid { get; set; }
-        [NotMapped]
-        public Chef cook { get; set; }
+        public Chef Chef { get; set; }
         public Dish()
         {
             created_at = DateTime.Now;

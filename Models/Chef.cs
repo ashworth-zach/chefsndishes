@@ -39,8 +39,9 @@ namespace chefdishes.Models
         public DateTime created_at { get; set; }
 
         public DateTime updated_at { get; set; }
+        public List<Dish> Dish { get; set; }
         [NotMapped]
-        public List<Dish> dishes {get;set;}
+        public int total{get;set;}
         public static int CalculateAge(DateTime dateOfBirth)
         {
             int age = 0;

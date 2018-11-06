@@ -22,7 +22,12 @@ namespace chefdishes.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
+            // var dishesChef = dbContext.dish.Include(x => x.Chef).ToList();
             List<Chef> AllChefs = dbContext.chef.ToList();
+            foreach (var chef in AllChefs){
+                int total = dbContext.dish.Where( x => x.Chefid == chef.Chefid).Count();
+                chef.total=total;
+            }
             ViewBag.AllChefs = AllChefs;
             return View();
         }
@@ -56,11 +61,10 @@ namespace chefdishes.Controllers
         [HttpGet("dishes")]
         public IActionResult DishesSplash()
         {
-                // List<Dish> dishesChef = dbContext.dish.Include(chef => chef.cook).ToList();
-            var dishesChef = dbContext.dish.Include(x => x.cook).ToList();
+            var dishesChef = dbContext.dish.Include(x => x.Chef).ToList();
 
             List<Dish> AllDishes = dbContext.dish.ToList();
-            ViewBag.AllDishes = AllDishes;
+            ViewBag.AllDishes = dishesChef;
             return View("Dishes");
         }
         [HttpGet("newdish")]
@@ -76,8 +80,9 @@ namespace chefdishes.Controllers
             if (ModelState.IsValid)
             {
                 Chef RetrievedChef = dbContext.chef.FirstOrDefault(x => x.Chefid == newdish.Chefid);
-                newdish.cook = RetrievedChef;
-                Console.WriteLine(newdish.cook.firstname+"========================================");
+                newdish.Chef = RetrievedChef;
+                // RetrievedChef.Dish.Add(newdish);
+                Console.WriteLine(newdish.Chef.firstname+"========================================");
                 dbContext.dish.Add(newdish);
                 dbContext.SaveChanges();
                 return RedirectToAction("DishesSplash");
